@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/charset.h</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/com_intexh_segmentation_impl_scws_SCWSLibrary.h</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/config_win32.h</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/crc32.h</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/darray.h</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/lock.h</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/pool.h</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/rule.h</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/scws.h</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/xdb.h</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/xdict.h</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/xtree.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/charset.c</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/com_intexh_segmentation_impl_scws_SCWSLibrary.c</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/crc32.c</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/darray.c</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/lock.c</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/pool.c</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/rule.c</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/scws.c</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/xdb.c</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/xdict.c</itemPath>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/xtree.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f1"
+                     displayName="scws4jTest"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>/home/intexh/NetBeansProjects/scws4j/tests/scws4jTest.c</itemPath>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="2">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <incDir>
+            <pElem>/usr/lib/jdk1.7.0_65/include</pElem>
+            <pElem>/usr/lib/jdk1.7.0_65/include/linux</pElem>
+            <pElem>/home/intexh/CUnitHome/include/CUnit</pElem>
+            <pElem>/home/intexh/CUnitHome/include</pElem>
+          </incDir>
+          <commandLine>-m64</commandLine>
+        </cTool>
+      </compileType>
+      <item path="/home/intexh/NetBeansProjects/scws4j/charset.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/charset.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/com_intexh_segmentation_impl_scws_SCWSLibrary.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/com_intexh_segmentation_impl_scws_SCWSLibrary.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/config_win32.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/crc32.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/crc32.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/darray.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/darray.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/lock.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/lock.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/pool.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/pool.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/rule.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/rule.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/scws.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/scws.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/tests/scws4jTest.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/xdb.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/xdb.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/xdict.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/xdict.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/xtree.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/xtree.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <folder path="TestFiles/f1">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+    </conf>
+    <conf name="Release" type="2">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="/home/intexh/NetBeansProjects/scws4j/charset.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/charset.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/com_intexh_segmentation_impl_scws_SCWSLibrary.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/com_intexh_segmentation_impl_scws_SCWSLibrary.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/config_win32.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/crc32.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/crc32.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/darray.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/darray.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/lock.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/lock.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/pool.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/pool.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/rule.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/rule.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/scws.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/scws.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/tests/scws4jTest.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/xdb.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/xdb.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/xdict.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/xdict.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/xtree.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/xtree.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <folder path="TestFiles/f1">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+    </conf>
+  </confs>
+</configurationDescriptor>
