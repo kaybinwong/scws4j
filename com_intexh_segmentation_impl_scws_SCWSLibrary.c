@@ -13,15 +13,32 @@
 #include <stdlib.h>
 #include <string.h>
 
+//external method
 jstring s2Jstring(JNIEnv *env, const char *pat);
 char* substring(char*dst, char*src, int start, int n);
 char* jstring2string(JNIEnv *env, jstring jstr);
-jobjectArray get_words(JNIEnv *env, jobject obj, scws_top_t top_t);
+jobjectArray get_words(JNIEnv *env, jobject obj, scws_top_t top_t, int resultCount);
+
+//java model info
+jclass objClass;
+
+jclass segmentationClass;
+jfieldID offsetID;
+jfieldID seg_wordID;
+jfieldID idfID;
+jfieldID seg_attrID;
+
+jclass topwordClass;
+jfieldID top_wordID;
+jfieldID timesID;
+jfieldID weightID;
+jfieldID top_attrID;
 
 scws_t interface;
 
 JNIEXPORT void JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_create_1new
 (JNIEnv *env, jobject obj) {
+    objClass = (*env)->FindClass(env, "java/lang/Object");
     interface = scws_new();
 }
 
@@ -104,59 +121,53 @@ JNIEXPORT void JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_reset_
 
 JNIEXPORT jobjectArray JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1result
 (JNIEnv *env, jobject obj) {
-
-    scws_res_t res = scws_get_result(interface);
-    scws_res_t tmp = res;
+    
+    if(segmentationClass == NULL) {  
+        segmentationClass = (*env)->FindClass(env,"com/intexh/segmentation/model/SegmentationModel");        
+        offsetID = (*env)->GetFieldID(env, segmentationClass, "offset", "I");
+        seg_wordID = (*env)->GetFieldID(env, segmentationClass, "word", "Ljava/lang/String;");
+        idfID = (*env)->GetFieldID(env, segmentationClass, "idf", "F");
+        seg_attrID = (*env)->GetFieldID(env, segmentationClass, "attr", "Ljava/lang/String;");
+    }
+    
     int count = 0;
-    do {
-        count++;
-    } while ((tmp = tmp->next) != NULL);
+    
+    scws_res_t res = scws_get_result(interface,&count);
 
     //申明一个object数组 
     jobjectArray args = 0;
-
-    //获取object所属类,一般为ava/lang/Object就可以了
-    jclass objClass = (*env)->FindClass(env, "java/lang/Object");
-
-    //新建object数组
     args = (*env)->NewObjectArray(env, count, objClass, 0);
-
-    /**//* 下面为获取到Java中对应的实例类中的变量*/
-
-    //获取Java中的实例类
-    jclass objectClass = (*env)->FindClass(env, "com/intexh/segmentation/impl/scws/SegmentationModel");
-
-    //获取类中每一个变量的定义偏
-    jfieldID offsetID = (*env)->GetFieldID(env, objectClass, "offset", "I");
-    jfieldID lengthID = (*env)->GetFieldID(env, objectClass, "length", "C");
-    jfieldID idfID = (*env)->GetFieldID(env, objectClass, "idf", "F");
-    jfieldID attrID = (*env)->GetFieldID(env, objectClass, "attr", "Ljava/lang/String;");
-    tmp = res;
+    
     int i = 0;
+    scws_res_t cur = res;
     do {
-        (*env)->SetIntField(env, obj, offsetID, tmp->off);
-        (*env)->SetCharField(env, obj, lengthID, tmp->len);
-        (*env)->SetFloatField(env, obj, idfID, tmp->idf);
-        (*env)->SetObjectField(env, obj, attrID, s2Jstring(env, tmp->attr));
+        char* word;
+        substring(word,interface->txt,cur->off,cur->len);
+        (*env)->SetIntField(env, obj, offsetID, cur->off);
+        (*env)->SetObjectField(env, obj, seg_wordID, s2Jstring(env,word));
+        (*env)->SetFloatField(env, obj, idfID, cur->idf);
+        (*env)->SetObjectField(env, obj, seg_attrID, s2Jstring(env, cur->attr));
+        res = cur->next;
+        free(cur);
         //添加到objcet数组中
-        (*env)->SetObjectArrayElement(env, args, i, obj);
-        i++;
-    } while ((tmp = res->next) != NULL);
+        (*env)->SetObjectArrayElement(env, args, i++, obj);
+    } while ((cur = res) != NULL);
 
     return args;
 }
 
 JNIEXPORT jobjectArray JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1tops
 (JNIEnv *env, jobject obj, jint ji, jstring jstr) {
-    int nums = ji;
+    int nums = ji,count=0;
     char* xattr = (char*) (*env)->GetStringUTFChars(env, jstr, 0);
-    return get_words(env, obj, scws_get_tops(interface, nums, xattr));
+    return get_words(env, obj, scws_get_tops(interface, nums, xattr,&count),count);
 }
 
 JNIEXPORT jobjectArray JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1words
   (JNIEnv *env, jobject obj, jstring jstr){
     char* xattr = (char*) (*env)->GetStringUTFChars(env, jstr, 0);
-    return get_words(env, obj, scws_get_words(interface, xattr));
+    int count=0;
+    return get_words(env, obj, scws_get_words(interface, xattr, &count),count);
 }
 
 JNIEXPORT jboolean JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_has_1word
@@ -165,46 +176,33 @@ JNIEXPORT jboolean JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_ha
     return scws_has_word(interface,word)==1;
 }
 
-jobjectArray get_words(JNIEnv *env, jobject obj, scws_top_t top_t) {
+jobjectArray get_words(JNIEnv *env, jobject obj, scws_top_t top_t, int resultCount) {
+    
+    if(topwordClass == NULL){
+        topwordClass = (*env)->FindClass(env, "com/intexh/segmentation/impl/scws/TopWordModel");
+        top_wordID = (*env)->GetFieldID(env, topwordClass, "word", "Ljava/lang/String;");
+        timesID = (*env)->GetFieldID(env, topwordClass, "times", "S");
+        weightID = (*env)->GetFieldID(env, topwordClass, "weight", "F");
+        top_attrID = (*env)->GetFieldID(env, topwordClass, "attr", "Ljava/lang/String;");
+    }
 
     if (top_t == NULL) return NULL;
 
-    scws_top_t tmp = top_t;
-    int count = 0;
-    do {
-        count++;
-    } while ((tmp = top_t->next) != NULL);
-
     //申明一个object数组 
     jobjectArray args = 0;
-
-    //获取object所属类,一般为ava/lang/Object就可以了
-    jclass objClass = (*env)->FindClass(env, "java/lang/Object");
-
-    //新建object数组
-    args = (*env)->NewObjectArray(env, count, objClass, 0);
-
-    /**//* 下面为获取到Java中对应的实例类中的变量*/
-
-    //获取Java中的实例类
-    jclass objectClass = (*env)->FindClass(env, "com/intexh/segmentation/impl/scws/TopWordModel");
-
-    //获取类中每一个变量的定义偏
-    jfieldID wordID = (*env)->GetFieldID(env, objectClass, "word", "Ljava/lang/String;");
-    jfieldID timesID = (*env)->GetFieldID(env, objectClass, "times", "S");
-    jfieldID weightID = (*env)->GetFieldID(env, objectClass, "weight", "F");
-    jfieldID attrID = (*env)->GetFieldID(env, objectClass, "attr", "Ljava/lang/String;");
-    tmp = top_t;
+    args = (*env)->NewObjectArray(env, resultCount, objClass, 0);
+    
     int i = 0;
+    
     do {
-        (*env)->SetObjectField(env, obj, wordID, s2Jstring(env,tmp->word));
-        (*env)->SetCharField(env, obj, timesID, tmp->times);
-        (*env)->SetFloatField(env, obj, weightID, tmp->weight);
-        (*env)->SetObjectField(env, obj, attrID, s2Jstring(env, tmp->attr));
+        (*env)->SetObjectField(env, obj, top_wordID, s2Jstring(env,top_t->word));
+        (*env)->SetCharField(env, obj, timesID, top_t->times);
+        (*env)->SetFloatField(env, obj, weightID, top_t->weight);
+        (*env)->SetObjectField(env, obj, top_attrID, s2Jstring(env, top_t->attr));
         //添加到objcet数组中
         (*env)->SetObjectArrayElement(env, args, i, obj);
         i++;
-    } while ((tmp = top_t->next) != NULL);
+    } while ((top_t = top_t->next) != NULL);
 
     return args;
 }

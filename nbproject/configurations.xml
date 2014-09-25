@@ -20,6 +20,12 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <logicalFolder name="rules" displayName="rules" projectFiles="true">
+        <itemPath>/home/intexh/NetBeansProjects/scws4j/rules/rules.ini</itemPath>
+        <itemPath>/home/intexh/NetBeansProjects/scws4j/rules/rules.utf8.ini</itemPath>
+        <itemPath>/home/intexh/NetBeansProjects/scws4j/rules/rules_cht.utf8.ini</itemPath>
+      </logicalFolder>
+      <itemPath>/home/intexh/NetBeansProjects/scws4j/dict.utf8.xdb</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -54,6 +60,9 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>/home/intexh/NetBeansProjects/scws4j/rules</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="2">
@@ -118,6 +127,11 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/dict.utf8.xdb"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="/home/intexh/NetBeansProjects/scws4j/lock.c"
             ex="false"
             tool="0"
@@ -144,6 +158,21 @@
             flavor2="0">
       </item>
       <item path="/home/intexh/NetBeansProjects/scws4j/rule.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/rules/rules.ini"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/rules/rules.utf8.ini"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/rules/rules_cht.utf8.ini"
             ex="false"
             tool="3"
             flavor2="0">
@@ -267,6 +296,11 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/dict.utf8.xdb"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="/home/intexh/NetBeansProjects/scws4j/lock.c"
             ex="false"
             tool="0"
@@ -293,6 +327,21 @@
             flavor2="0">
       </item>
       <item path="/home/intexh/NetBeansProjects/scws4j/rule.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/rules/rules.ini"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/rules/rules.utf8.ini"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4j/rules/rules_cht.utf8.ini"
             ex="false"
             tool="3"
             flavor2="0">

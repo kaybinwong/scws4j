@@ -1130,7 +1130,7 @@ do_segment:
 	darray_free((void **) wmap);
 }
 
-scws_res_t scws_get_result(scws_t s)
+scws_res_t scws_get_result(scws_t s,int *resultCount)
 {
 	int off, len, ch, clen, zlen, pflag;
 	unsigned char *txt;
@@ -1145,6 +1145,7 @@ scws_res_t scws_get_result(scws_t s)
 		{
 			s->off = off + 1;
 			SCWS_PUT_RES(off, 0.0, 1, attr_un);
+                        resultCount++;  //by Alex Wong 20140925
 			return s->res0;
 		}
 		off++;
@@ -1160,6 +1161,7 @@ scws_res_t scws_get_result(scws_t s)
 	{
 		s->off++;
 		SCWS_PUT_RES(off, 0.0, 1, attr_un);
+                resultCount++;  //by Alex Wong 20140925
 		return s->res0;
 	}
 	clen = SCWS_CHARLEN(ch);
@@ -1265,7 +1267,7 @@ scws_res_t scws_get_result(scws_t s)
 	/* reutrn the result */
 	s->off = (ch > len ? len : off);
 	if (s->res0 == NULL)
-		return scws_get_result(s);
+		return scws_get_result(s,resultCount);
 
 	return s->res0;
 }
@@ -1346,7 +1348,7 @@ static inline int _attr_belong(const char *a, word_attr *at)
 	strncpy(at[cnt], xattr, 2);							\
 } while (0)
 
-scws_top_t scws_get_tops(scws_t s, int limit, char *xattr)
+scws_top_t scws_get_tops(scws_t s, int limit, char *xattr, int *resultCount)
 {
 	int off, cnt, xmode = SCWS_NA;
 	xtree_t xt;	
@@ -1363,7 +1365,7 @@ scws_top_t scws_get_tops(scws_t s, int limit, char *xattr)
 	// save the offset.
 	off = s->off;
 	s->off = cnt = 0;
-	while ((cur = res = scws_get_result(s)) != NULL)
+	while ((cur = res = scws_get_result(s,resultCount)) != NULL)
 	{
 		do
 		{
@@ -1454,7 +1456,7 @@ scws_top_t scws_get_tops(scws_t s, int limit, char *xattr)
 // word check by attr.
 int scws_has_word(scws_t s, char *xattr)
 {
-	int off, cnt, xmode = SCWS_NA;
+	int off, cnt, xmode = SCWS_NA,resultCount;
 	scws_res_t res, cur;
 	char *word;
 	word_attr *at = NULL;	
@@ -1467,7 +1469,7 @@ int scws_has_word(scws_t s, char *xattr)
 	// save the offset. (cnt -> return_value)
 	off = s->off;
 	cnt = s->off = 0;
-	while (!cnt && (cur = res = scws_get_result(s)) != NULL)
+	while (!cnt && (cur = res = scws_get_result(s,&resultCount)) != NULL)
 	{
 		do
 		{
@@ -1492,7 +1494,7 @@ int scws_has_word(scws_t s, char *xattr)
 }
 
 // get words by attr (rand order)
-scws_top_t scws_get_words(scws_t s, char *xattr)
+scws_top_t scws_get_words(scws_t s, char *xattr, int *resultCount)
 {
 	int off, cnt, xmode = SCWS_NA;
 	xtree_t xt;	
@@ -1510,7 +1512,7 @@ scws_top_t scws_get_words(scws_t s, char *xattr)
 	off = s->off;
 	s->off = 0;
 	base = tail = NULL;
-	while ((cur = res = scws_get_result(s)) != NULL)
+	while ((cur = res = scws_get_result(s,resultCount)) != NULL)
 	{
 		do
 		{

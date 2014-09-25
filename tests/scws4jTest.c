@@ -7,52 +7,31 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <CUnit/Basic.h>
 
-/*
- * CUnit Test Suite
- */
-
-int init_suite(void) {
-    return 0;
-}
-
-int clean_suite(void) {
-    return 0;
-}
-
-void test1() {
-    CU_ASSERT(2 * 2 == 4);
-}
-
-void test2() {
-    CU_ASSERT(2 * 2 == 5);
-}
+#include "scws.h"
 
 int main() {
-    CU_pSuite pSuite = NULL;
+    char *dic_path = "../dict.utf8.xdb";
+    char *rules = "../rules";
+    
+    scws_t t = scws_new();
+    scws_set_dict(t,dic_path,1);
+    scws_set_charset(t,"utf-8");
+    scws_set_rule(t,rules);
+    scws_set_ignore(t,1);
+    scws_set_multi(t,1);
+    scws_set_debug(t,1);
+    scws_set_duality(t,1);
+    char *txt = "我是中国人！！！";
+    scws_send_text(t,txt,strlen(txt));
+    int count=0;
+    scws_res_t res_t = scws_get_result(t,&count);
+    scws_res_t cur;
 
-    /* Initialize the CUnit test registry */
-    if (CUE_SUCCESS != CU_initialize_registry())
-        return CU_get_error();
-
-    /* Add a suite to the registry */
-    pSuite = CU_add_suite("scws4jTest", init_suite, clean_suite);
-    if (NULL == pSuite) {
-        CU_cleanup_registry();
-        return CU_get_error();
+    while ((cur = res_t) != NULL){
+        printf("Start=%d Length=%d Idf=%d Attr=%s\n",
+        res_t->off,res_t->len,res_t->idf,&(res_t->attr));
+        res_t = cur->next;
+	free(cur);
     }
-
-    /* Add the tests to the suite */
-    if ((NULL == CU_add_test(pSuite, "test1", test1)) ||
-            (NULL == CU_add_test(pSuite, "test2", test2))) {
-        CU_cleanup_registry();
-        return CU_get_error();
-    }
-
-    /* Run all tests using the CUnit Basic interface */
-    CU_basic_set_mode(CU_BRM_VERBOSE);
-    CU_basic_run_tests();
-    CU_cleanup_registry();
-    return CU_get_error();
 }
