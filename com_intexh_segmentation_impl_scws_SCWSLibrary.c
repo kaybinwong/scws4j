@@ -104,12 +104,13 @@ JNIEXPORT void JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_reset_
 
 JNIEXPORT jobjectArray JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1result
 (JNIEnv *env, jobject obj) {
+
     scws_res_t res = scws_get_result(interface);
     scws_res_t tmp = res;
     int count = 0;
     do {
         count++;
-    } while ((tmp = res->next) != NULL);
+    } while ((tmp = tmp->next) != NULL);
 
     //申明一个object数组 
     jobjectArray args = 0;
