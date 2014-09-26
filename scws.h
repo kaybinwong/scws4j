@@ -45,7 +45,7 @@ struct scws_result
 	float idf;
 	unsigned char len;
 	char attr[3];
-	scws_res_t next;
+	scws_res_t next;  
 };
 
 typedef struct scws_topword *scws_top_t;
@@ -103,13 +103,13 @@ void scws_set_debug(scws_t s, int yes);
 void scws_set_duality(scws_t s, int yes);
 
 void scws_send_text(scws_t s, const char *text, int len);
-scws_res_t scws_get_result(scws_t s,int *resultCount);
+scws_res_t scws_get_result(scws_t s);
 void scws_free_result(scws_res_t result);
 
-scws_top_t scws_get_tops(scws_t s, int limit, char *xattr, int *resultCount);
+scws_top_t scws_get_tops(scws_t s, int limit, char *xattr);
 void scws_free_tops(scws_top_t tops);
 
-scws_top_t scws_get_words(scws_t s, char *xattr, int *resultCount);
+scws_top_t scws_get_words(scws_t s, char *xattr);
 int scws_has_word(scws_t s, char *xattr);
 
 #ifdef __cplusplus

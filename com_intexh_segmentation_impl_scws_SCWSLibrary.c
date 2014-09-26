@@ -12,33 +12,20 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include "cJSON.h"
 
 //external method
-jstring s2Jstring(JNIEnv *env, const char *pat);
-char* substring(char*dst, char*src, int start, int n);
-char* jstring2string(JNIEnv *env, jstring jstr);
-jobjectArray get_words(JNIEnv *env, jobject obj, scws_top_t top_t, int resultCount);
 
-//java model info
-jclass objClass;
+static char *substring(char*dst, char*src, int start, int n);
 
-jclass segmentationClass;
-jfieldID offsetID;
-jfieldID seg_wordID;
-jfieldID idfID;
-jfieldID seg_attrID;
-
-jclass topwordClass;
-jfieldID top_wordID;
-jfieldID timesID;
-jfieldID weightID;
-jfieldID top_attrID;
+static jstring s2Jstring(JNIEnv *env, const char *pat);
+static char* jstring2string(JNIEnv *env, jstring jstr);
+static jstring get_words(JNIEnv *env, jobject obj, scws_top_t top_t);
 
 scws_t interface;
 
 JNIEXPORT void JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_create_1new
 (JNIEnv *env, jobject obj) {
-    objClass = (*env)->FindClass(env, "java/lang/Object");
     interface = scws_new();
 }
 
@@ -119,55 +106,45 @@ JNIEXPORT void JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_reset_
     scws_send_text(interface, text, len);
 }
 
-JNIEXPORT jobjectArray JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1result
+JNIEXPORT jstring JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1result
 (JNIEnv *env, jobject obj) {
+    cJSON *root,*fld;
+    scws_res_t res, cur;
     
-    if(segmentationClass == NULL) {  
-        segmentationClass = (*env)->FindClass(env,"com/intexh/segmentation/model/SegmentationModel");        
-        offsetID = (*env)->GetFieldID(env, segmentationClass, "offset", "I");
-        seg_wordID = (*env)->GetFieldID(env, segmentationClass, "word", "Ljava/lang/String;");
-        idfID = (*env)->GetFieldID(env, segmentationClass, "idf", "F");
-        seg_attrID = (*env)->GetFieldID(env, segmentationClass, "attr", "Ljava/lang/String;");
+    root=cJSON_CreateArray();
+    
+    while (res = cur = scws_get_result(interface)) {
+        while (cur != NULL) {
+            //handle seg
+            //printf("WORD: %.*s/%s (IDF = %4.2f)\n", cur->len, interface->txt + cur->off, cur->attr, cur->idf);
+            cJSON_AddItemToArray(root,fld=cJSON_CreateObject());            
+            char word[256];
+            substring(word,interface->txt,cur->off,cur->len);
+            cJSON_AddNumberToObject(fld,"offset",cur->off);
+            cJSON_AddStringToObject(fld, "word", word);
+            cJSON_AddNumberToObject(fld,"idf", cur->idf);            
+            cJSON_AddStringToObject(fld,"attr", cur->attr);
+            //repoint the next
+            cur = cur->next;
+        }
+        scws_free_result(res);
     }
-    
-    int count = 0;
-    
-    scws_res_t res = scws_get_result(interface,&count);
-
-    //申明一个object数组 
-    jobjectArray args = 0;
-    args = (*env)->NewObjectArray(env, count, objClass, 0);
-    
-    int i = 0;
-    scws_res_t cur = res;
-    do {
-        char* word;
-        substring(word,interface->txt,cur->off,cur->len);
-        (*env)->SetIntField(env, obj, offsetID, cur->off);
-        (*env)->SetObjectField(env, obj, seg_wordID, s2Jstring(env,word));
-        (*env)->SetFloatField(env, obj, idfID, cur->idf);
-        (*env)->SetObjectField(env, obj, seg_attrID, s2Jstring(env, cur->attr));
-        res = cur->next;
-        free(cur);
-        //添加到objcet数组中
-        (*env)->SetObjectArrayElement(env, args, i++, obj);
-    } while ((cur = res) != NULL);
-
-    return args;
+    char *json = cJSON_Print(root);
+    cJSON_Delete(root);
+    return s2Jstring(env,json);
 }
 
-JNIEXPORT jobjectArray JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1tops
+JNIEXPORT jstring JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1tops
 (JNIEnv *env, jobject obj, jint ji, jstring jstr) {
-    int nums = ji,count=0;
+    int nums = ji;
     char* xattr = (char*) (*env)->GetStringUTFChars(env, jstr, 0);
-    return get_words(env, obj, scws_get_tops(interface, nums, xattr,&count),count);
+    return get_words(env, obj, scws_get_tops(interface, nums, xattr));
 }
 
-JNIEXPORT jobjectArray JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1words
+JNIEXPORT jstring JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1words
   (JNIEnv *env, jobject obj, jstring jstr){
     char* xattr = (char*) (*env)->GetStringUTFChars(env, jstr, 0);
-    int count=0;
-    return get_words(env, obj, scws_get_words(interface, xattr, &count),count);
+    return get_words(env, obj, scws_get_words(interface, xattr));
 }
 
 JNIEXPORT jboolean JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_has_1word
@@ -176,53 +153,29 @@ JNIEXPORT jboolean JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_ha
     return scws_has_word(interface,word)==1;
 }
 
-jobjectArray get_words(JNIEnv *env, jobject obj, scws_top_t top_t, int resultCount) {
+static jstring get_words(JNIEnv *env, jobject obj, scws_top_t top_t) {
+    cJSON *root,*fld;
+    scws_top_t cur = top_t;
     
-    if(topwordClass == NULL){
-        topwordClass = (*env)->FindClass(env, "com/intexh/segmentation/impl/scws/TopWordModel");
-        top_wordID = (*env)->GetFieldID(env, topwordClass, "word", "Ljava/lang/String;");
-        timesID = (*env)->GetFieldID(env, topwordClass, "times", "S");
-        weightID = (*env)->GetFieldID(env, topwordClass, "weight", "F");
-        top_attrID = (*env)->GetFieldID(env, topwordClass, "attr", "Ljava/lang/String;");
+    root=cJSON_CreateArray();
+    while (cur != NULL) {
+        //printf("WORD: %s/%s (Weight = %4.2f) Times:%d\n", cur->word, cur->attr, cur->weight, cur->times);
+        cJSON_AddItemToArray(root,fld=cJSON_CreateObject());
+        cJSON_AddStringToObject(fld, "word", cur->word);
+        cJSON_AddNumberToObject(fld,"weight", cur->weight);   
+        cJSON_AddNumberToObject(fld,"times", cur->times);            
+        cJSON_AddStringToObject(fld,"attr", cur->attr);
+        cur = cur->next;
     }
-
-    if (top_t == NULL) return NULL;
-
-    //申明一个object数组 
-    jobjectArray args = 0;
-    args = (*env)->NewObjectArray(env, resultCount, objClass, 0);
-    
-    int i = 0;
-    
-    do {
-        (*env)->SetObjectField(env, obj, top_wordID, s2Jstring(env,top_t->word));
-        (*env)->SetCharField(env, obj, timesID, top_t->times);
-        (*env)->SetFloatField(env, obj, weightID, top_t->weight);
-        (*env)->SetObjectField(env, obj, top_attrID, s2Jstring(env, top_t->attr));
-        //添加到objcet数组中
-        (*env)->SetObjectArrayElement(env, args, i, obj);
-        i++;
-    } while ((top_t = top_t->next) != NULL);
-
-    return args;
-}
-
-char* substring(char*dst, char*src, int start, int n) {
-    char *p = src;
-    char *q = dst;
-    int len = strlen(p);
-    if (n > len) n = len - start;
-    if (start < 0) start = 0;
-    if (start > len) return NULL;
-    p += start;
-    while (n--) *(q++) = *(p++);
-    *(q++) = '\0';
-    return dst;
+    scws_free_tops(cur);
+    char *json = cJSON_Print(root);
+    cJSON_Delete(root);
+    return s2Jstring(env,json);
 }
 
 //jstring to char*
 
-char* jstring2string(JNIEnv *env, jstring jstr) {
+static char* jstring2string(JNIEnv *env, jstring jstr) {
     char* rtn = NULL;
     jclass clsstring = (*env)->FindClass(env, "Ljava/lang/String;");
     jstring strencode = (*env)->NewStringUTF(env, "utf-8");
@@ -241,11 +194,24 @@ char* jstring2string(JNIEnv *env, jstring jstr) {
 
 //char* to jstring
 
-jstring s2Jstring(JNIEnv *env, const char *pat) {
+static jstring s2Jstring(JNIEnv *env, const char *pat) {
     jclass strClass = (*env)->FindClass(env, "Ljava/lang/String;");
     jmethodID ctorID = (*env)->GetMethodID(env, strClass, "<init>", "([BLjava/lang/String;)V");
     jbyteArray bytes = (*env)->NewByteArray(env, strlen(pat));
     (*env)->SetByteArrayRegion(env, bytes, 0, strlen(pat), (jbyte*) pat);
     jstring encoding = (*env)->NewStringUTF(env, "utf-8");
     return (jstring) (*env)->NewObject(env, strClass, ctorID, bytes, encoding);
+}
+
+static char* substring(char*dst, char*src, int start, int n) {
+    char *p = src;
+    char *q = dst;
+    int len = strlen(p);
+    if (n > len) n = len - start;
+    if (start < 0) start = 0;
+    if (start > len) return NULL;
+    p += start;
+    while (n--) *(q++) = *(p++);
+    *(q++) = '\0';
+    return dst;
 }

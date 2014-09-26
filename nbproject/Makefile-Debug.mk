@@ -45,7 +45,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/347633335/scws.o \
 	${OBJECTDIR}/_ext/347633335/xdb.o \
 	${OBJECTDIR}/_ext/347633335/xdict.o \
-	${OBJECTDIR}/_ext/347633335/xtree.o
+	${OBJECTDIR}/_ext/347633335/xtree.o \
+	${OBJECTDIR}/_ext/2122806651/cJSON.o
 
 # Test Directory
 TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
@@ -132,6 +133,11 @@ ${OBJECTDIR}/_ext/347633335/xtree.o: /home/intexh/NetBeansProjects/scws4j/xtree.
 	${MKDIR} -p ${OBJECTDIR}/_ext/347633335
 	${RM} "$@.d"
 	$(COMPILE.c) -g -I/usr/lib/jdk1.7.0_65/include -I/usr/lib/jdk1.7.0_65/include/linux -I/home/intexh/CUnitHome/include/CUnit -I/home/intexh/CUnitHome/include -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/347633335/xtree.o /home/intexh/NetBeansProjects/scws4j/xtree.c
+
+${OBJECTDIR}/_ext/2122806651/cJSON.o: /home/intexh/NetBeansProjects/scws4jTest/cJSON.c 
+	${MKDIR} -p ${OBJECTDIR}/_ext/2122806651
+	${RM} "$@.d"
+	$(COMPILE.c) -g -I/usr/lib/jdk1.7.0_65/include -I/usr/lib/jdk1.7.0_65/include/linux -I/home/intexh/CUnitHome/include/CUnit -I/home/intexh/CUnitHome/include -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/2122806651/cJSON.o /home/intexh/NetBeansProjects/scws4jTest/cJSON.c
 
 # Subprojects
 .build-subprojects:
@@ -290,6 +296,19 @@ ${OBJECTDIR}/_ext/347633335/xtree_nomain.o: ${OBJECTDIR}/_ext/347633335/xtree.o 
 	    $(COMPILE.c) -g -I/usr/lib/jdk1.7.0_65/include -I/usr/lib/jdk1.7.0_65/include/linux -I/home/intexh/CUnitHome/include/CUnit -I/home/intexh/CUnitHome/include -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/347633335/xtree_nomain.o /home/intexh/NetBeansProjects/scws4j/xtree.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/_ext/347633335/xtree.o ${OBJECTDIR}/_ext/347633335/xtree_nomain.o;\
+	fi
+
+${OBJECTDIR}/_ext/2122806651/cJSON_nomain.o: ${OBJECTDIR}/_ext/2122806651/cJSON.o /home/intexh/NetBeansProjects/scws4jTest/cJSON.c 
+	${MKDIR} -p ${OBJECTDIR}/_ext/2122806651
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/_ext/2122806651/cJSON.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -g -I/usr/lib/jdk1.7.0_65/include -I/usr/lib/jdk1.7.0_65/include/linux -I/home/intexh/CUnitHome/include/CUnit -I/home/intexh/CUnitHome/include -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/2122806651/cJSON_nomain.o /home/intexh/NetBeansProjects/scws4jTest/cJSON.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/_ext/2122806651/cJSON.o ${OBJECTDIR}/_ext/2122806651/cJSON_nomain.o;\
 	fi
 
 # Run Test Targets

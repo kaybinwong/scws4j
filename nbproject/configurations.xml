@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>/home/intexh/NetBeansProjects/scws4jTest/cJSON.h</itemPath>
       <itemPath>/home/intexh/NetBeansProjects/scws4j/charset.h</itemPath>
       <itemPath>/home/intexh/NetBeansProjects/scws4j/com_intexh_segmentation_impl_scws_SCWSLibrary.h</itemPath>
       <itemPath>/home/intexh/NetBeansProjects/scws4j/config_win32.h</itemPath>
@@ -30,6 +31,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>/home/intexh/NetBeansProjects/scws4jTest/cJSON.c</itemPath>
       <itemPath>/home/intexh/NetBeansProjects/scws4j/charset.c</itemPath>
       <itemPath>/home/intexh/NetBeansProjects/scws4j/com_intexh_segmentation_impl_scws_SCWSLibrary.c</itemPath>
       <itemPath>/home/intexh/NetBeansProjects/scws4j/crc32.c</itemPath>
@@ -222,6 +224,16 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="/home/intexh/NetBeansProjects/scws4jTest/cJSON.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4jTest/cJSON.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <folder path="TestFiles/f1">
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f1</output>
@@ -387,6 +399,16 @@
             flavor2="0">
       </item>
       <item path="/home/intexh/NetBeansProjects/scws4j/xtree.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4jTest/cJSON.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="/home/intexh/NetBeansProjects/scws4jTest/cJSON.h"
             ex="false"
             tool="3"
             flavor2="0">

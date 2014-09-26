@@ -98,25 +98,25 @@ JNIEXPORT void JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_reset_
 /*
  * Class:     com_intexh_segmentation_impl_scws_SCWSLibrary
  * Method:    get_result
- * Signature: ()[Lcom/intexh/segmentation/model/SegmentationModel;
+ * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jobjectArray JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1result
+JNIEXPORT jstring JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1result
   (JNIEnv *, jobject);
 
 /*
  * Class:     com_intexh_segmentation_impl_scws_SCWSLibrary
  * Method:    get_tops
- * Signature: (ILjava/lang/String;)[Lcom/intexh/segmentation/model/TopWordModel;
+ * Signature: (ILjava/lang/String;)Ljava/lang/String;
  */
-JNIEXPORT jobjectArray JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1tops
+JNIEXPORT jstring JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1tops
   (JNIEnv *, jobject, jint, jstring);
 
 /*
  * Class:     com_intexh_segmentation_impl_scws_SCWSLibrary
  * Method:    get_words
- * Signature: (Ljava/lang/String;)[Lcom/intexh/segmentation/model/TopWordModel;
+ * Signature: (Ljava/lang/String;)Ljava/lang/String;
  */
-JNIEXPORT jobjectArray JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1words
+JNIEXPORT jstring JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1words
   (JNIEnv *, jobject, jstring);
 
 /*
