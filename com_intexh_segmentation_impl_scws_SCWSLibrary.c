@@ -15,14 +15,31 @@
 #include "cJSON.h"
 
 //external method
+scws_t interface;
 
 static char *substring(char*dst, char*src, int start, int n);
-
 static jstring s2Jstring(JNIEnv *env, const char *pat);
 static char* jstring2string(JNIEnv *env, jstring jstr);
-static jstring get_words(JNIEnv *env, jobject obj, scws_top_t top_t);
 
-scws_t interface;
+#define GET_WORDS(env,obj,top_t)\
+do{\
+    cJSON *root;\
+    cJSON *fld;\
+    scws_top_t cur = top_t;\
+    root=cJSON_CreateArray();\
+    while (cur != NULL) {\
+        cJSON_AddItemToArray(root,fld=cJSON_CreateObject());\
+        cJSON_AddStringToObject(fld, "word", cur->word);\
+        cJSON_AddNumberToObject(fld,"weight", cur->weight);  \ 
+        cJSON_AddNumberToObject(fld,"times", cur->times);  \          
+        cJSON_AddStringToObject(fld,"attr", cur->attr);\
+        cur = cur->next;\
+    }\
+    scws_free_tops(cur);\
+    char *json = cJSON_Print(root);\
+    cJSON_Delete(root);\
+    return s2Jstring(env,json);\
+}while(0)
 
 JNIEXPORT void JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_create_1new
 (JNIEnv *env, jobject obj) {
@@ -138,39 +155,19 @@ JNIEXPORT jstring JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get
 (JNIEnv *env, jobject obj, jint ji, jstring jstr) {
     int nums = ji;
     char* xattr = (char*) (*env)->GetStringUTFChars(env, jstr, 0);
-    return get_words(env, obj, scws_get_tops(interface, nums, xattr));
+    GET_WORDS(env, obj, scws_get_tops(interface, nums, xattr));
 }
 
 JNIEXPORT jstring JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_get_1words
   (JNIEnv *env, jobject obj, jstring jstr){
     char* xattr = (char*) (*env)->GetStringUTFChars(env, jstr, 0);
-    return get_words(env, obj, scws_get_words(interface, xattr));
+    GET_WORDS(env, obj, scws_get_words(interface, xattr));
 }
 
 JNIEXPORT jboolean JNICALL Java_com_intexh_segmentation_impl_scws_SCWSLibrary_has_1word
   (JNIEnv *env, jobject obj, jstring jstr){    
     char* word = (char*) (*env)->GetStringUTFChars(env, jstr, 0);
     return scws_has_word(interface,word)==1;
-}
-
-static jstring get_words(JNIEnv *env, jobject obj, scws_top_t top_t) {
-    cJSON *root,*fld;
-    scws_top_t cur = top_t;
-    
-    root=cJSON_CreateArray();
-    while (cur != NULL) {
-        //printf("WORD: %s/%s (Weight = %4.2f) Times:%d\n", cur->word, cur->attr, cur->weight, cur->times);
-        cJSON_AddItemToArray(root,fld=cJSON_CreateObject());
-        cJSON_AddStringToObject(fld, "word", cur->word);
-        cJSON_AddNumberToObject(fld,"weight", cur->weight);   
-        cJSON_AddNumberToObject(fld,"times", cur->times);            
-        cJSON_AddStringToObject(fld,"attr", cur->attr);
-        cur = cur->next;
-    }
-    scws_free_tops(cur);
-    char *json = cJSON_Print(root);
-    cJSON_Delete(root);
-    return s2Jstring(env,json);
 }
 
 //jstring to char*
